@@ -6,7 +6,7 @@ For a view of all the functionalities check the [demo](https://koumoul-dev.githu
 
 ## Usage
 
-    npm i --save @koumoul/vuetify-jsonschema-form
+    npm i --save @edgar-orozco/vuetify-jsonschema-form
 
 ```
 <template>
@@ -25,7 +25,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Swatches from 'vue-swatches'
 import 'vue-swatches/dist/vue-swatches.min.css'
-import VJsonschemaForm from '@koumoul/vuetify-jsonschema-form'
+import VJsonschemaForm from '@edgar-orozco/vuetify-jsonschema-form'
 
 Vue.use(Vuetify)
 Vue.use(VueAxios, axios)
