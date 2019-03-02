@@ -1,15 +1,19 @@
 
 .vjsf-property .array-card .v-card__text {
-  padding: 6px 16px 0 16px;
+    padding: 6px 16px 0 16px;
 }
 .vjsf-property .array-card .v-card__actions {
-  padding: 0 16px 6px 16px;
+    padding: 0 16px 6px 16px;
 }
 .vjsf-property .v-input--selection-controls {
-  margin-top: 0;
+    margin-top: 0;
+}
+.vjsf-property .v-subheader {
+    font-size: 16px;
+    background-color: white;
 }
 .vjsf-tooltip p:last-child {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 
