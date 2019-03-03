@@ -64,6 +64,7 @@
         <template
                 v-else-if="(((fullSchema.type === 'array' && fullSchema.items.enum) ||
                 fullSchema.enum) && fullSchema['x-radio'])">
+            <div><label>{{fullSchema.title}}</label></div>
             <v-radio-group v-model="modelWrapper[modelKey]" row style="display:inline-block;">
                 <template v-for="i in fullSchema.enum">
                     <v-radio :label="i" :value="i"></v-radio>
