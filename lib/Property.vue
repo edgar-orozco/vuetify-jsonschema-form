@@ -25,6 +25,10 @@
                     :clearable="!required"
                     prepend-icon="event"
                     readonly>
+                <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                    <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                    <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+                </v-tooltip>
                 <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                     <v-icon slot="activator">info</v-icon>
                     <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -64,9 +68,17 @@
         <template
                 v-else-if="(((fullSchema.type === 'array' && fullSchema.items.enum) ||
                 fullSchema.enum) && fullSchema['x-radio'])">
-            <div><label>{{fullSchema.title}}</label></div>
+            <div>
+                <label>
+                    <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable-radio" right>
+                        <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                        <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+                    </v-tooltip>
+                    {{fullSchema.title}}
+                </label>
+            </div>
             <v-radio-group v-model="modelWrapper[modelKey]" row style="display:inline-block;">
-                <template v-for="i in fullSchema.enum">
+                <template v-for="i in fullSchema.enum" style="display:inline-block;">
                     <v-radio :label="i" :value="i"></v-radio>
                 </template>
             </v-radio-group>
@@ -78,13 +90,18 @@
 
      <!-- signpad simple string and x-signpad=true -->
         <template v-else-if="fullSchema.type === 'string' && fullSchema['x-signpad']">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable-signpad" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-btn @click.stop="signatureDialog" color="green lighten-2" dark>
                 {{fullSchema.title}}
-                <v-tooltip v-if="fullSchema.description" slot="append" left>
-                    <v-icon slot="activator">info</v-icon>
-                    <div class="vjsf-tooltip" v-html="htmlDescription"/>
-                </v-tooltip>
             </v-btn>
+            <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
+                <v-icon slot="activator">info</v-icon>
+                <div class="vjsf-tooltip" v-html="htmlDescription"/>
+            </v-tooltip>
+
             <v-dialog v-model="signDialog" fullscreen>
                 <v-card>
                     <v-card-title class="headline">
@@ -251,6 +268,12 @@
                     :disabled="disabled"
                     :required="required"
                     :rules="rules">
+
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
+
             <v-tooltip v-if="fullSchema.description" slot="append" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -297,10 +320,16 @@
 
         <!-- Object sub container with properties that may include a select based on a oneOf and subparts base on a allOf -->
         <div v-else-if="fullSchema.type === 'object'">
-            <v-subheader v-if="fullSchema.title" :style="foldable ? 'cursor:pointer;' :'' " class="mt-2"
+
+            <v-tooltip v-if="fullSchema.id && options.editable" class="editable-section" right style="display: inline-block;">
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
+
+            <v-subheader v-if="fullSchema.title" :style="foldable ? 'cursor:pointer;' :''" class="mt-2"
                          @click="folded = !folded">
+
                 {{ fullSchema.title }}
-                &nbsp;
                 <v-icon v-if="foldable && folded">arrow_drop_down</v-icon>
                 <v-icon v-if="foldable && !folded">arrow_drop_up</v-icon>
             </v-subheader>
@@ -470,6 +499,7 @@
 
 <script>
   import VueSignaturePad from 'vue-signature-pad';
+  import { EventBus } from './event-bus.js';
 
   const matchAll = require('match-all')
   const md = require('markdown-it')()
@@ -641,6 +671,9 @@
       }
     },
     methods: {
+      editElement(id){
+        EventBus.$emit('clicked-element-edit', id);
+      },
       signatureDialog(){
         setTimeout(() => {
           var ratio =  Math.max(window.devicePixelRatio || 1, 1);
@@ -809,15 +842,6 @@
 
     .vjsf-property .v-input--selection-controls {
         margin-top: 0;
-    }
-
-    .vjsf-property .v-subheader {
-        font-size: 16px;
-        background-color: white;
-    }
-
-    .vjsf-tooltip p:last-child {
-        margin-bottom: 0;
     }
 
 </style>
