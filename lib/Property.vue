@@ -51,6 +51,10 @@
                  :required="required"
                  :rules="rules"
                  :disabled="disabled">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -138,6 +142,10 @@
                   :disabled="disabled"
                   :clearable="!required"
                   :multiple="fullSchema.type === 'array'">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription "/>
@@ -157,6 +165,10 @@
                 :rules="rules"
                 :clearable="!required"
                 :multiple="fullSchema.type === 'array'">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -179,6 +191,10 @@
                   :clearable="!required"
                   :loading="loading"
                   :multiple="fullSchema.type === 'array'">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -204,6 +220,10 @@
                         :placeholder="options.searchMessage"
                         :loading="loading"
                         :multiple="fullSchema.type === 'array'">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -221,6 +241,10 @@
                 :rules="rules"
                 box
         >
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -236,6 +260,10 @@
                       :required="required"
                       :rules="rules"
         >
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -254,6 +282,10 @@
                       :required="required"
                       :rules="rules"
                       type="number">
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -273,7 +305,6 @@
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
-
             <v-tooltip v-if="fullSchema.description" slot="append" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -294,6 +325,10 @@
                 multiple
                 append-icon=""
         >
+            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+            </v-tooltip>
             <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
                 <v-icon slot="activator">info</v-icon>
                 <div class="vjsf-tooltip" v-html="htmlDescription"/>
@@ -401,6 +436,10 @@
                             :rules="oneOfRules"
                             item-text="title"
                             return-object>
+                        <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                            <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                            <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+                        </v-tooltip>
                         <v-tooltip v-if="oneOfConstProp && oneOfConstProp.description" slot="append-outer" left>
                             <v-icon slot="activator">info</v-icon>
                             <div class="vjsf-tooltip" v-html="oneOfConstProp.htmlDescription"/>
