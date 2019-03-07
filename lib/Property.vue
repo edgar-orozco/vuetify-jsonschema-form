@@ -107,22 +107,24 @@
             </v-tooltip>
 
             <v-dialog v-model="signDialog" fullscreen>
-                <v-card>
+                <v-card >
                     <v-card-title class="headline">
                         {{ fullSchema.description }}
                     </v-card-title>
                     <v-card-text>
-                        <VueSignaturePad width="500px" height="500px" ref="signaturePad"/>
+                        <div class="signature-container">
+                            <VueSignaturePad height="320px" ref="signaturePad"/>
+                        </div>
                     </v-card-text>
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-btn block
                                color="red lighten-2"
-                               @click="signatureDialog">
+                               @click="signUndo">
                             {{options.i18n[options.locale].cancel || 'Cancel'}}
                         </v-btn>
                         <v-btn block
-                               color="red lighten-2"
+                               color="green lighten-2"
                                @click="signSsave">
                             {{options.i18n[options.locale].ok || 'OK'}}
                         </v-btn>
@@ -711,29 +713,36 @@
     },
     methods: {
       editElement(id){
-        EventBus.$emit('clicked-element-edit', id);
+        console.log('desde el property lanzamos para ', id);
+        this.$bus.$emit('clicked-element-edit', id);
       },
       signatureDialog(){
         setTimeout(() => {
           var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+          console.log('el ratio', ratio);
           var canvas = this.$refs.signaturePad.$el.children[0];
           if(canvas) {
             canvas.width = canvas.offsetWidth * ratio;
             canvas.height = canvas.offsetHeight * ratio;
             canvas.getContext("2d").scale(ratio, ratio);
           }
+          console.log('se ha resizeado segun');
+          this.$refs.signaturePad.resizeCanvas();
         }, 1000)
 
         this.signDialog = true;
       },
       signUndo() {
-        this.$refs.signaturePad.undoSignature();
+        this.$refs.signaturePad.clearSignature();
         this.signDialog = false;
       },
       signSsave() {
         const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
         console.log(isEmpty);
         console.log(data);
+        if(!isEmpty) {
+          this.modelWrapper[this.modelKey] = data;
+        }
         this.signDialog = false;
       },
       getDeepKey(obj, key) {
@@ -881,6 +890,9 @@
 
     .vjsf-property .v-input--selection-controls {
         margin-top: 0;
+    }
+    .signature-container {
+        border: thin solid silver;
     }
 
 </style>
