@@ -8,5 +8,8 @@
 .vjsf-property .v-input--selection-controls {
     margin-top: 0;
 }
+.signature-container {
+    border: thin solid silver;
+}
 
 
