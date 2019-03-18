@@ -11,6 +11,16 @@ import 'vue-swatches/dist/vue-swatches.min.css'
 Vue.use(Vuetify)
 Vue.use(VueAxios, axios)
 
+const EventBus = new Vue()
+
+Object.defineProperties(Vue.prototype, {
+  $bus: {
+    get: function () {
+      return EventBus
+    }
+  }
+})
+
 Vue.component('swatches', Swatches)
 Vue.component('draggable', Draggable)
 

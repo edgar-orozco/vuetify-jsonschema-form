@@ -81,7 +81,10 @@
                     {{fullSchema.title}}
                 </label>
             </div>
-            <v-radio-group v-model="modelWrapper[modelKey]" row style="display:inline-block;">
+            <v-radio-group
+                    v-model="modelWrapper[modelKey]"
+                    :rules="rules"
+                    row style="display:inline-block;">
                 <template v-for="i in fullSchema.enum" style="display:inline-block;">
                     <v-radio :label="i" :value="i"></v-radio>
                 </template>
@@ -94,18 +97,20 @@
 
      <!-- signpad simple string and x-signpad=true -->
         <template v-else-if="fullSchema.type === 'string' && fullSchema['x-signpad']">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable-signpad" right>
-                <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
-                <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
-            </v-tooltip>
-            <v-btn @click.stop="signatureDialog" color="green lighten-2" dark>
-                {{fullSchema.title}}
-            </v-btn>
-            <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
-                <v-icon slot="activator">info</v-icon>
-                <div class="vjsf-tooltip" v-html="htmlDescription"/>
-            </v-tooltip>
-
+            <v-input :rules="signatureRules" :error-messages="signatureErrors">
+                <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable-signpad" right>
+                    <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                    <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+                </v-tooltip>
+                <v-btn @click.stop="signatureDialog" color="green lighten-2" dark>
+                    {{fullSchema.title}}
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-tooltip v-if="fullSchema.description" left>
+                    <v-icon slot="activator">info</v-icon>
+                    <div class="vjsf-tooltip" v-html="htmlDescription"/>
+                </v-tooltip>
+            </v-input>
             <v-dialog v-model="signDialog" fullscreen>
                 <v-card >
                     <v-card-title class="headline">
@@ -554,6 +559,8 @@
     data() {
       return {
         signDialog: false,
+        signIsEmpty: true,
+        signatureErrors:[],
         ready: false,
         menu: false,
         rawSelectItems: null,
@@ -625,6 +632,13 @@
           rules.push((val) => (val === undefined || val === null || val.length <= this.fullSchema.maxLength) || '')
         }
         return rules
+      },
+      signatureRules(){
+        const rules = [];
+        if (this.required) {
+          rules.push((val) => ( !!this.modelWrapper[this.modelKey] ) || 'Su firma es requerida')
+        }
+        return rules;
       },
       fromUrl() {
         return !!(this.fullSchema['x-fromUrl'] && this.fullSchema['x-fromUrl'].indexOf('{q}') === -1)
@@ -713,20 +727,17 @@
     },
     methods: {
       editElement(id){
-        console.log('desde el property lanzamos para ', id);
         this.$bus.$emit('clicked-element-edit', id);
       },
       signatureDialog(){
         setTimeout(() => {
           var ratio =  Math.max(window.devicePixelRatio || 1, 1);
-          console.log('el ratio', ratio);
           var canvas = this.$refs.signaturePad.$el.children[0];
           if(canvas) {
             canvas.width = canvas.offsetWidth * ratio;
             canvas.height = canvas.offsetHeight * ratio;
             canvas.getContext("2d").scale(ratio, ratio);
           }
-          console.log('se ha resizeado segun');
           this.$refs.signaturePad.resizeCanvas();
         }, 1000)
 
@@ -738,8 +749,6 @@
       },
       signSsave() {
         const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
-        console.log(isEmpty);
-        console.log(data);
         if(!isEmpty) {
           this.modelWrapper[this.modelKey] = data;
         }
