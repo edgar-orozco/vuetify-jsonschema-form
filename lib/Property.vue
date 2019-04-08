@@ -258,6 +258,57 @@
             </v-tooltip>
         </v-textarea>
 
+        <!-- Simple text with photo and file -->
+        <template v-else-if="((fullSchema.type === 'string') && fullSchema['x-photo-doc'])">
+
+            <v-layout row>
+
+                <v-flex shrink>
+                    <v-btn fab outline small @click.stop="photoDialog = true">
+                        <v-icon dark small>photo_camera</v-icon>
+                    </v-btn>
+                </v-flex>
+                <v-flex grow>
+                    <v-btn :class="fileSelectedClass" fab outline small @click.stop="addFile(fullSchema.id+'-doc')">
+                        <v-icon dark small>folder</v-icon>
+                        <input type="file" :id="fullSchema.id+'-doc'" :name="fullKey+'-doc'" @change="onFile"
+                               :ref="fullSchema.id+'-doc'"/>
+                    </v-btn>
+                </v-flex>
+                <v-flex>
+                <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                    <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
+                    <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
+                </v-tooltip>
+                </v-flex>
+                <v-flex shrink>
+
+                <v-tooltip v-if="fullSchema.description" slot="append-outer" left>
+                    <v-icon slot="activator">info</v-icon>
+                    <div class="vjsf-tooltip" v-html="htmlDescription"/>
+
+                </v-tooltip>
+                </v-flex>
+            </v-layout>
+
+            <v-dialog v-model="photoDialog" fullscreen>
+                <v-card >
+                    <v-card-title class="headline">
+                        {{ fullSchema.description }}
+                    </v-card-title>
+                    <v-card-text>
+                        <div class="photo-container">
+
+                            <photo-cam height="320px" :ref="fullSchema.id+'-photo'" v-if="photoDialog"/>
+
+                        </div>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+
+        </template>
+
+
         <!-- Simple text field -->
         <v-text-field v-else-if="fullSchema.type === 'string'"
                       v-model="modelWrapper[modelKey]"
@@ -546,6 +597,7 @@
 <script>
   import VueSignaturePad from 'vue-signature-pad';
   import { EventBus } from './event-bus.js';
+  import PhotoCam from './PhotoCam.vue';
 
   const matchAll = require('match-all')
   const md = require('markdown-it')()
@@ -553,12 +605,14 @@
   export default {
     name: 'Property',
 
-    components: {VueSignaturePad},
+    components: {VueSignaturePad, PhotoCam},
 
     props: ['schema', 'modelWrapper', 'modelRoot', 'modelKey', 'parentKey', 'required', 'options'],
     data() {
       return {
         signDialog: false,
+        photoDialog: false,
+        fileSelected: false,
         signIsEmpty: true,
         signatureErrors:[],
         ready: false,
@@ -573,6 +627,7 @@
       }
     },
     computed: {
+
       fullSchema() {
         // console.log('Re process full schema')
         const fullSchema = JSON.parse(JSON.stringify(this.schema))
@@ -692,6 +747,9 @@
         const rules = []
         if (this.oneOfRequired) rules.push((val) => (val !== undefined && val !== null && val !== '') || this.options.requiredMessage)
         return rules
+      },
+      fileSelectedClass(){
+        return this.fileSelected ? 'file-selected' : '';
       }
     },
     watch: {
@@ -726,8 +784,39 @@
       }
     },
     methods: {
+      photoUndo(){
+
+      },
+      photoSave(){
+
+      },
+      addFile(id){
+        this.fileSelected = false;
+        console.log(id);
+        this.$refs[id].click();
+      },
+      onFile(ev){
+        const file = ev.target.files[0];
+        const reader = new FileReader();
+        reader.onload = e => {
+          //this.$emit("onLoad", e.target.result);
+          console.log(e.target); // data-uri string
+          if(this.modelWrapper[this.modelKey] && 'document' in this.modelWrapper[this.modelKey]){
+            this.modelWrapper[this.modelKey] = {document: e.target.result, photo: null};
+            this.fileSelected = true;
+          }else{
+            this.modelWrapper[this.modelKey] = {document: e.target.result};
+            this.fileSelected = true;
+          }
+
+        };
+        reader.readAsDataURL(file);
+      },
       editElement(id){
         this.$bus.$emit('clicked-element-edit', id);
+      },
+      photocamDialog(){
+        this.photoDialog = true;
       },
       signatureDialog(){
         setTimeout(() => {
