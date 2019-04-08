@@ -1,4 +1,14 @@
 
+#vid_container[data-v-41b0d3b5] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 50px;
+}
+
+
+
+
 .vjsf-property .array-card .v-card__text {
     padding: 6px 16px 0 16px;
 }
