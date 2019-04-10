@@ -1,4 +1,7 @@
 module.exports = [
+  require('./vdemo'),
+  require('./test'),
+  require('./formaElementos'),
   require('./basic'),
   require('./arrays'),
   require('./pickers'),

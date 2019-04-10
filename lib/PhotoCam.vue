@@ -1,19 +1,16 @@
 <template>
-    <v-layout>
-        <v-flex>
+    <v-layout row wrap>
+        <v-flex xs12>
             <div id="vid_container">
                 <video id="video" ref="video" autoplay playsinline class="camera-stream"></video>
-                <div id="video_overlay">
-                </div>
             </div>
-
         </v-flex>
 
-        <v-flex>
-            <v-bottom-nav app
-                          absolute
-                          color="white"
-                          style="opacity: .6"
+        <v-flex xs12>
+            <div class="photo-bar" app
+                 absolute
+                 color="white"
+                 style="opacity: .6"
             >
 
                 <v-btn v-if="currentFacingMode === 'environment'"
@@ -53,8 +50,9 @@
                     <v-icon>cancel</v-icon>
                 </v-btn>
 
-            </v-bottom-nav>
+            </div>
         </v-flex>
+
     </v-layout>
 </template>
 
@@ -71,13 +69,19 @@
     },
     methods: {
       takePhoto() {
+        let vm = this;
         const mediaStreamTrack = this.mediaStream.getVideoTracks()[0]
         const imageCapture = new window.ImageCapture(mediaStreamTrack)
         return imageCapture.takePhoto().then(blob => {
           this.blobFoto = blob;
+          var reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = function() {
+            let base64data = reader.result;
+            vm.$emit('photo-saved', base64data)
+          }
           this.destroyCam();
 
-          console.log(blob);
         })
       },
       ffCamMode() {
@@ -86,6 +90,7 @@
       },
       cancelCam(){
         this.destroyCam();
+        this.$emit('photo-canceled')
       },
       initCam() {
         this.destroyCam();
@@ -131,12 +136,17 @@
 </script>
 
 <style scoped>
-    #vid_container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 50px;
-    }
 
+    #vid_container {
+        box-sizing: border-box;
+        height: 100%;
+        overflow: hidden;
+        width: 100%;
+    }
+    video { height: 100%;}
+
+    .photo-bar{
+        background-color: white;
+    }
 
 </style>

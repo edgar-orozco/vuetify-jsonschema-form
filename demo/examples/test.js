@@ -1,23 +1,39 @@
 module.exports = {
-  title: 'Dependencies',
+  title: 'Elementos',
   schema: {
     type: 'object',
     properties: {
-      name: { 'type': 'string' },
-      acceptTC: {
-        title: 'Accept terms and conditions',
-        type: 'boolean'
-      }
-    },
-    dependencies: {
-      acceptTC: {
+      tipoElemento: {
+        type: 'object',
         oneOf: [
+          {$ref: '#/definitions/textosimple'},
+          {$ref: '#/definitions/selector'},
           {$ref: '#/definitions/fecha'},
           {$ref: '#/definitions/creditCardPayment'},
           {$ref: '#/definitions/paypalPayment'}]
       }
     },
     definitions: {
+      textosimple: {
+        title: 'Texto simple',
+        properties: {
+          type: {const: 'text'}
+        }
+      },
+      selector: {
+        title: 'Selector',
+        properties: {
+          type: {const: 'selector'},
+          opciones: {
+            type: 'array',
+            title: 'Opciones',
+            description: 'Ingrese las opciones que podrá escoger el usuario.',
+            items: {
+              'type': 'string'
+            }
+          }
+        }
+      },
       fecha: {
         title: 'Fecha',
         properties: {

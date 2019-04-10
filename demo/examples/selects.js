@@ -8,7 +8,8 @@ module.exports = {
       'gender': {
         'type': 'string',
         'description': "The person's gender.",
-        enum: ['male', 'female']
+        enum: ['male', 'female', 'trans'],
+        'x-display': 'radio'
       },
       'genderWithTitles': {
         'type': 'string',

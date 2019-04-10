@@ -6,32 +6,40 @@ module.exports = {
     description: 'Representación de la forma dinámica',
     type: 'object',
     properties: {
-      valoresElementos: {
-        type: 'array',
-        title: 'Valores de selección',
-        description: 'Esta es la sección donde se conforman los elementos',
-        items: {
-          type: 'string'
-        }
+      nombreSeccion: {
+        type: 'string',
+        title: 'Nombre de la sección',
+        description: 'Esta es la sección donde se conforman los elementos'
       },
-      elemento: {
-        '$ref': '#/definitions/tipoElemento'
+      elementos: {
+        type: 'array',
+        description: 'Listado de elementos que integran la forma.',
+        noedit: true,
+        items: {
+          '$ref': '#/definitions/elementos'
+        }
       }
     },
     definitions: {
-      tipoElemento: {
-        type: 'object',
-        oneOf: [
-          {$ref: '#/definitions/textosimple'},
-          {$ref: '#/definitions/selector'},
-          {$ref: '#/definitions/fecha'},
-          {$ref: '#/definitions/creditCardPayment'},
-          {$ref: '#/definitions/paypalPayment'}]
-      },
       textosimple: {
         title: 'Texto simple',
+        noedit: true,
         properties: {
           type: {const: 'text'}
+        }
+      },
+      check: {
+        title: 'Opción tipo "check"',
+        noedit: true,
+        properties: {
+          type: {const: 'boolean'}
+        }
+      },
+      entero: {
+        title: 'Entrada numérica',
+        noedit: true,
+        properties: {
+          type: {const: 'string'}
         }
       },
       selector: {
@@ -43,7 +51,7 @@ module.exports = {
             title: 'Opciones',
             description: 'Ingrese las opciones que podrá escoger el usuario.',
             items: {
-              type: 'string'
+              'type': 'string'
             }
           }
         }
@@ -52,24 +60,7 @@ module.exports = {
         title: 'Fecha',
         properties: {
           type: {const: 'date'},
-          fecha: {type: 'string', format: 'date', title: 'La Fecha', description: 'Es la fecha para probar esta cosa'}
-        }
-      },
-
-      creditCardPayment: {
-        title: 'Credit card payment',
-        properties: {
-          type: {const: 'creditcardpayment'},
-          credit_card: { type: 'number' }
-        },
-        required: ['credit_card'],
-        dependencies: {
-          credit_card: {
-            properties: {
-              billing_address: { type: 'string' }
-            },
-            required: ['billing_address']
-          }
+          fecha: {type: 'string', 'format': 'date', 'title': 'La Fecha', 'description': 'Es la fecha para probar esta cosa'}
         }
       },
       elementos: {
@@ -88,15 +79,13 @@ module.exports = {
             type: 'string',
             description: 'Es el texto que aparecerá en la ayuda o información guía del elemento.'
           },
-          elementoTipo: {
-            type: 'string',
-            title: 'Tipo de elemento',
-            description: 'Es el tipo de elemento que aparecerá en pantalla.',
+          tipoElemento: {
+            type: 'object',
             oneOf: [
-              {
-                '$ref': '#/definitions/creditCardPayment'
-              }
-            ]
+              {$ref: '#/definitions/textosimple'},
+              {$ref: '#/definitions/selector'},
+              {$ref: '#/definitions/check'},
+              {$ref: '#/definitions/fecha'}]
           },
           elementoObligatorio: {
             title: 'Obligatorio',

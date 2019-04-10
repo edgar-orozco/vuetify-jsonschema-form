@@ -25,7 +25,7 @@
                     :clearable="!required"
                     prepend-icon="event"
                     readonly>
-                <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                     <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                     <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
                 </v-tooltip>
@@ -51,7 +51,7 @@
                  :required="required"
                  :rules="rules"
                  :disabled="disabled">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -74,7 +74,7 @@
                 fullSchema.enum) && fullSchema['x-radio'])">
             <div>
                 <label>
-                    <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable-radio" right>
+                    <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable-radio" right>
                         <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                         <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
                     </v-tooltip>
@@ -98,7 +98,7 @@
      <!-- signpad simple string and x-signpad=true -->
         <template v-else-if="fullSchema.type === 'string' && fullSchema['x-signpad']">
             <v-input :rules="signatureRules" :error-messages="signatureErrors">
-                <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable-signpad" right>
+                <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable-signpad" right>
                     <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                     <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
                 </v-tooltip>
@@ -149,7 +149,7 @@
                   :disabled="disabled"
                   :clearable="!required"
                   :multiple="fullSchema.type === 'array'">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -172,7 +172,7 @@
                 :rules="rules"
                 :clearable="!required"
                 :multiple="fullSchema.type === 'array'">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -198,7 +198,7 @@
                   :clearable="!required"
                   :loading="loading"
                   :multiple="fullSchema.type === 'array'">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -227,7 +227,7 @@
                         :placeholder="options.searchMessage"
                         :loading="loading"
                         :multiple="fullSchema.type === 'array'">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -248,7 +248,7 @@
                 :rules="rules"
                 box
         >
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -264,7 +264,7 @@
             <v-layout row>
 
                 <v-flex shrink>
-                    <v-btn fab outline small @click.stop="photoDialog = true">
+                    <v-btn :class="photoSelectedClass" fab outline small @click.stop="photoDialog = true">
                         <v-icon dark small>photo_camera</v-icon>
                     </v-btn>
                 </v-flex>
@@ -276,7 +276,7 @@
                     </v-btn>
                 </v-flex>
                 <v-flex>
-                <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                     <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                     <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
                 </v-tooltip>
@@ -298,9 +298,9 @@
                     </v-card-title>
                     <v-card-text>
                         <div class="photo-container">
-
-                            <photo-cam height="320px" :ref="fullSchema.id+'-photo'" v-if="photoDialog"/>
-
+                            <photo-cam height="320px" :ref="fullSchema.id+'-photo'" v-if="photoDialog"
+                                       @photo-saved="photoSave" @photo-canceled="photoCanceled"
+                            />
                         </div>
                     </v-card-text>
                 </v-card>
@@ -318,7 +318,7 @@
                       :required="required"
                       :rules="rules"
         >
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -340,7 +340,7 @@
                       :required="required"
                       :rules="rules"
                       type="number">
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -359,7 +359,7 @@
                     :required="required"
                     :rules="rules">
 
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -383,7 +383,7 @@
                 multiple
                 append-icon=""
         >
-            <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -414,7 +414,7 @@
         <!-- Object sub container with properties that may include a select based on a oneOf and subparts base on a allOf -->
         <div v-else-if="fullSchema.type === 'object'">
 
-            <v-tooltip v-if="fullSchema.id && options.editable" class="editable-section" right style="display: inline-block;">
+            <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" class="editable-section" right style="display: inline-block;">
                 <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                 <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
             </v-tooltip>
@@ -494,7 +494,7 @@
                             :rules="oneOfRules"
                             item-text="title"
                             return-object>
-                        <v-tooltip v-if="fullSchema.id && options.editable" slot="prepend" class="editable" right>
+                        <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
                             <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                             <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
                         </v-tooltip>
@@ -613,6 +613,7 @@
         signDialog: false,
         photoDialog: false,
         fileSelected: false,
+        photoSelected: false,
         signIsEmpty: true,
         signatureErrors:[],
         ready: false,
@@ -731,7 +732,7 @@
         return this.options.disableAll
       },
       foldable() {
-        return this.options.autoFoldObjects && this.parentKey && this.fullSchema.title
+        return this.options.autoFoldObjects && this.parentKey && this.fullSchema.title || this.fullSchema.foldable
       },
       oneOfConstProp() {
         if (!this.fullSchema.oneOf) return
@@ -750,6 +751,9 @@
       },
       fileSelectedClass(){
         return this.fileSelected ? 'file-selected' : '';
+      },
+      photoSelectedClass(){
+        return this.photoSelected ? 'photo-selected' : '';
       }
     },
     watch: {
@@ -784,15 +788,27 @@
       }
     },
     methods: {
-      photoUndo(){
-
+      photoSave(photo){
+        this.photoSelected = true;
+        this.photoDialog = false;
+        if(this.modelWrapper[this.modelKey] && 'photo' in this.modelWrapper[this.modelKey]) {
+          this.modelWrapper[this.modelKey].photo = photo;
+        } else {
+          this.modelWrapper[this.modelKey] = {document: null, photo: photo}
+        }
       },
-      photoSave(){
-
+      photoCanceled(photo){
+        console.log(photo);
+        this.photoSelected = false;
+        this.photoDialog = false;
+        if(this.modelWrapper[this.modelKey] && 'photo' in this.modelWrapper[this.modelKey]) {
+          this.modelWrapper[this.modelKey].photo = null;
+        } else {
+          this.modelWrapper[this.modelKey] = {document: null, photo: null}
+        }
       },
       addFile(id){
         this.fileSelected = false;
-        console.log(id);
         this.$refs[id].click();
       },
       onFile(ev){

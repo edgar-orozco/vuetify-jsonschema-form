@@ -4,6 +4,26 @@
       <v-toolbar-title>vuetify-jsonschema-form demo</v-toolbar-title>
     </v-toolbar>
     <v-content>
+
+
+        <template>
+            <div class="">
+                <v-btn fab outline small>
+                    <v-icon dark small>photo_camera</v-icon>
+                </v-btn>
+
+                <v-btn fab outline small @click.stop="addFile">
+                    <v-icon dark small>folder</v-icon>
+                    <input type="file" id="file" name="file" @change="onFile" ref="file"/>
+                </v-btn>
+
+                <v-btn fab outline small>
+                    <v-icon dark small>photo</v-icon>
+                </v-btn>
+
+            </div>
+        </template>
+
       <v-container fluid grid-list-md>
         <v-layout row>
           <v-flex xs6>
@@ -38,9 +58,12 @@
                                  :schema="schema"
                                  :model="dataObject"
                                  :options="{debug: true,
+                                    editable: true,
                                     locale: 'es',
                                     i18n: { es: {cancel: 'Cancelar', ok: '-OK-'}},
                                     disableAll: false,
+                                    requiredMessage: 'Este dato es requerido',
+                                    noDataMessage: 'No se han encontrado coincidencias',
                                     autoFoldObjects: false,
                                     context: {owner: {type: 'organization', id: '5a5dc47163ebd4a6f438589b'}}, accordionMode: 'normal'}"
                                  @error="e => window.alert(e)" />
@@ -56,12 +79,13 @@
 
 <script>
 import VJsonschemaForm from '../lib/index.vue'
+import FileUpload from 'vue-base64-file-upload';
 
 import examples from './examples'
 import hjson from 'hjson' // more tolerant parsing of the schema for easier UX
 
 export default {
-  components: {VJsonschemaForm},
+  components: {VJsonschemaForm, FileUpload},
   data: function() {
     return {
       window,
@@ -70,14 +94,44 @@ export default {
       schemaError: null,
       dataObject: {},
       examples,
+      customImageMaxSize: 3,
       example: examples[0],
       formValid: false
     }
   },
   mounted() {
-    this.applyExample()
+    this.applyExample();
+  },
+  created(){
+    this.$bus.$on('clicked-element-edit', id => {
+      console.log(`Oh, that's nice. It's gotten ${id} edited! :)`)
+    });
   },
   methods: {
+    addFile(){
+        this.$refs.file.click();
+    },
+    onFile(ev) {
+      const file = ev.target.files[0];
+      const reader = new FileReader();
+      reader.onload = e => {
+        //this.$emit("onLoad", e.target.result);
+        console.log(e.target.result); // data-uri string
+      }
+      reader.readAsDataURL(file);
+    },
+
+    onLoad(dataUri) {
+      console.log('entra acui');
+      console.log(dataUri); // data-uri string
+    },
+
+    onSizeExceeded(size) {
+      alert(`Image ${size}Mb size exceeds limits of ${this.customImageMaxSize}Mb!`);
+    },
+    clickOnEditElement(ele){
+        console.log('desde el demo app',ele);
+    },
     applySchema() {
       try {
         this.schema = hjson.parse(this.schemaStr)
@@ -108,4 +162,30 @@ export default {
 </script>
 
 <style lang="css">
+    .vjsf-property .v-subheader {
+        font-size: 16px;
+        background-color: white;
+    }
+
+    .vjsf-tooltip p:last-child {
+        margin-bottom: 0;
+    }
+    .editable{
+        border: thin dashed violet;
+        margin-left: -100px;
+    }
+
+    [type="file"] {
+        height: 0;
+        overflow: hidden;
+        width: 0;
+    }
+    .file-selected {
+        border: thin greenyellow solid !important;
+        color: greenyellow !important;
+    }
+    .photo-selected {
+        border: thin greenyellow solid !important;
+        color: greenyellow !important;
+    }
 </style>
