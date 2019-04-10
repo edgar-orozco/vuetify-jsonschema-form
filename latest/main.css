@@ -1,11 +1,15 @@
 
 #vid_container[data-v-41b0d3b5] {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 50px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
 }
-
+video[data-v-41b0d3b5] { height: 100%;
+}
+.photo-bar[data-v-41b0d3b5]{
+    background-color: white;
+}
 
 
 
