@@ -276,7 +276,7 @@
                     </v-btn>
                 </v-flex>
                 <v-flex>
-                <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable" right>
+                <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable-photo-doc" right>
                     <v-icon slot="activator" @click.stop="editElement(fullSchema.id)">edit</v-icon>
                     <div class="vjsf-tooltip">Click para editar o eliminar este elemento</div>
                 </v-tooltip>
