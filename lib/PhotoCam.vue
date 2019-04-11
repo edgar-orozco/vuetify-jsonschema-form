@@ -13,25 +13,6 @@
                  style="opacity: .6"
             >
 
-                <v-btn v-if="currentFacingMode === 'environment'"
-                       color="teal"
-                       flat
-                       @click="ffCamMode"
-
-                >
-                    <span>Selfie Cam</span>
-                    <v-icon>camera_rear</v-icon>
-                </v-btn>
-
-                <v-btn v-if="currentFacingMode === 'user'"
-                       color="teal"
-                       flat
-                       @click="ffCamMode"
-                >
-                    <span>Front Cam</span>
-                    <v-icon>camera_front</v-icon>
-                </v-btn>
-
                 <v-btn
                         color="teal"
                         flat
