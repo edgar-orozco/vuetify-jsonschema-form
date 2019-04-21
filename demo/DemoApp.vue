@@ -5,6 +5,18 @@
     </v-toolbar>
     <v-content>
 
+        {{modelo}}
+
+        <v-container class="impuestos-container" grid-list-md text-xs-center v-for="(item, index) in listaImpuestos">
+            <input-enabler
+                    :model="modelo"
+                    :lista-impuestos="listaImpuestos"
+                    v-bind:impuesto="item.impuesto"
+                    v-bind:tasa="item.tasa"
+            />
+
+        </v-container>
+
 
         <template>
             <div class="">
@@ -80,15 +92,18 @@
 <script>
 import VJsonschemaForm from '../lib/index.vue'
 import FileUpload from 'vue-base64-file-upload';
+import InputEnabler from '../lib/InputEnabler.vue';
 
 import examples from './examples'
 import hjson from 'hjson' // more tolerant parsing of the schema for easier UX
 
 export default {
-  components: {VJsonschemaForm, FileUpload},
+  components: {VJsonschemaForm, FileUpload, InputEnabler},
   data: function() {
     return {
       window,
+      listaImpuestos: [{impuesto:'IVA',tasa:0.16}, {impuesto:'IEPS',tasa:.23},],
+      impuestos: [], tasas:[], modelo: { impuestos:[], tasas:[] },
       schema: null,
       schemaStr: '{}',
       schemaError: null,

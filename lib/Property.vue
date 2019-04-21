@@ -95,7 +95,20 @@
             </v-tooltip>
         </template>
 
-     <!-- signpad simple string and x-signpad=true -->
+        <!-- Input enabler x-input-enabler -->
+        <template v-else-if="fullSchema.type === 'array' && fullSchema['x-input-enabler']">
+            <v-container class="impuestos-container" grid-list-md text-xs-center v-for="(item, index) in fullSchema.enum">
+                <input-enabler
+                        :model="modelWrapper[modelKey]"
+                        :lista-impuestos="fullSchema.enum"
+                        v-bind:impuesto="item.impuesto"
+                        v-bind:tasa="item.tasa"
+                />
+            </v-container>
+        </template>
+        <!-- /Input enabler x-input-enabler -->
+
+        <!-- signpad simple string and x-signpad=true -->
         <template v-else-if="fullSchema.type === 'string' && fullSchema['x-signpad']">
             <v-input :rules="signatureRules" :error-messages="signatureErrors">
                 <v-tooltip v-if="fullSchema.id && options.editable && !fullSchema.noedit" slot="prepend" class="editable-signpad" right>
@@ -589,6 +602,9 @@
             </v-container>
 
         </div>
+
+
+
 
         <p v-else-if="options.debug">Unsupported type "{{ fullSchema.type }}" - {{ fullSchema }}</p>
     </div>
