@@ -14,7 +14,9 @@
                     type="number"
                     :disabled="!impuestos"
                     :value="tasa"
+                    :rules="tasasRules"
                     label="Tasa"
+                    :max="0.999999"
             ></v-text-field>
         </v-flex>
     </v-layout>
@@ -27,7 +29,10 @@
     data: function () {
       return {
         impuestos: null,
-        tasas: this.tasa
+        tasas: this.tasa,
+        tasasRules: [
+          v => (v <= 1  && v >= 0) || 'La tasa debe ser un número decimal entre 0 y 1'
+        ]
       }
     },
     watch: {

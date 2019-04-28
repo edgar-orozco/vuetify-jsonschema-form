@@ -9,7 +9,7 @@
 
         <v-container class="impuestos-container" grid-list-md text-xs-center v-for="(item, index) in listaImpuestos">
             <input-enabler
-                    :model="modelo"
+                    v-model="modelo"
                     :lista-impuestos="listaImpuestos"
                     v-bind:impuesto="item.impuesto"
                     v-bind:tasa="item.tasa"
@@ -102,7 +102,7 @@ export default {
   data: function() {
     return {
       window,
-      listaImpuestos: [{impuesto:'IVA',tasa:0.16}, {impuesto:'IEPS',tasa:.23},],
+      listaImpuestos: [{impuesto:'IVA',tasa:0.16}, {impuesto:'IEPS',tasa:.23}, {impuesto:'IETU',tasa: 0}],
       impuestos: [], tasas:[], modelo: { impuestos:[], tasas:[] },
       schema: null,
       schemaStr: '{}',

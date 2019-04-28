@@ -43,7 +43,8 @@ module.exports = {
             'description': 'Seleccione el impuesto que aplica',
             'enum': [
               {impuesto: 'IVA', tasa: 0.16},
-              {impuesto: 'IEPS', tasa: 0.23}
+              {impuesto: 'IEPS', tasa: 0.23},
+              {impuesto: 'IETU', tasa: ''}
             ]
           },
 
