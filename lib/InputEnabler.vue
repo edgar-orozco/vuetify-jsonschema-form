@@ -1,5 +1,6 @@
 <template>
     <v-layout row wrap>
+
         <v-flex xs6>
             <v-checkbox
                     v-model="impuestos"
@@ -22,7 +23,7 @@
 <script>
   export default {
     name: "input-enabler",
-    props: ['listaImpuestos', 'impuesto', 'model', 'tasa'],
+    props: ['listaImpuestos', 'impuesto', 'value', 'tasa'],
     data: function () {
       return {
         impuestos: null,
@@ -31,25 +32,33 @@
     },
     watch: {
       impuestos: function (nv, ov) {
+        if (!this.value.impuestos) {
+          this.value.impuestos = [];
+          this.value.tasas = [];
+        }
         if (nv) {
-          if (this.model.impuestos.includes(this.impuestos)) return;
-          this.model.impuestos.push(this.impuestos);
+          if (this.value.impuestos.includes(this.impuestos)) return;
+          this.value.impuestos.push(this.impuestos);
           let limp = this.listaImpuestos;
           for (let i = 0; i < limp.length; i++) {
             if (limp[i].impuesto === this.impuestos) {
               this.tasas = limp[i].tasa;
-              this.model.tasas.push(this.tasas);
+              this.value.tasas.push(this.tasas);
               break;
             }
           }
         }
         else if (!nv && ov) {
-          this.model.impuestos.splice(this.model.impuestos.indexOf(ov), 1);
-          this.model.tasas.splice(this.model.tasas.indexOf(this.tasas), 1);
+          this.value.impuestos.splice(this.value.impuestos.indexOf(ov), 1);
+          this.value.tasas.splice(this.value.tasas.indexOf(this.tasas), 1);
         }
       },
       tasas: function (nv, ov) {
-        this.model.tasas.splice(this.model.tasas.indexOf(ov), 1, nv);
+        if (!this.value.tasas) {
+          this.value.tasas = [];
+          return;
+        }
+        this.value.tasas.splice(this.value.tasas.indexOf(ov), 1, nv);
       }
     }
   }

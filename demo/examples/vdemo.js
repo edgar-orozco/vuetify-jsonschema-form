@@ -26,6 +26,40 @@ module.exports = {
         enum: ['male', 'female', 'trans'],
         'x-radio': true
       },
+      'impuesto': {
+        'id': 'g1554925071726',
+        'type': 'object',
+        'noedit': true,
+        'title': 'Impuestos aplicables',
+
+        'required': [],
+        'properties': {
+          'impuestos': {
+            'id': 'a1554925097284',
+            'idg': 'g1554925071726',
+            'type': 'input-enabler',
+            'input-enabler': true,
+            'title': 'Impuesto',
+            'description': 'Seleccione el impuesto que aplica',
+            'enum': [
+              {impuesto: 'IVA', tasa: 0.16},
+              {impuesto: 'IEPS', tasa: 0.23}
+            ]
+          },
+
+          'gender': {
+            'id': '23423423hhhj',
+            'type': 'string',
+            'noedit': true,
+            'title': 'El gender',
+            'description': "The person's gender.",
+            enum: ['male', 'female', 'trans'],
+            'x-radio': true
+          }
+
+
+        }
+      },
       'articulos_en_tracto': {
         'id': 'articulos-entracto',
         'noedit': true,

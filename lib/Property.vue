@@ -96,10 +96,10 @@
         </template>
 
         <!-- Input enabler x-input-enabler -->
-        <template v-else-if="fullSchema.type === 'array' && fullSchema['x-input-enabler']">
-            <v-container class="impuestos-container" grid-list-md text-xs-center v-for="(item, index) in fullSchema.enum">
-                <input-enabler
-                        :model="modelWrapper[modelKey]"
+        <template v-else-if="fullSchema.type=='input-enabler'">
+            <v-container class="" grid-list-md text-xs-center v-for="(item, index) in fullSchema.enum">
+                <InputEnabler
+                        v-model="modelWrapper"
                         :lista-impuestos="fullSchema.enum"
                         v-bind:impuesto="item.impuesto"
                         v-bind:tasa="item.tasa"
@@ -614,6 +614,7 @@
   import VueSignaturePad from 'vue-signature-pad';
   import { EventBus } from './event-bus.js';
   import PhotoCam from './PhotoCam.vue';
+  import InputEnabler from './InputEnabler.vue';
 
   const matchAll = require('match-all')
   const md = require('markdown-it')()
@@ -621,7 +622,7 @@
   export default {
     name: 'Property',
 
-    components: {VueSignaturePad, PhotoCam},
+    components: {VueSignaturePad, PhotoCam, InputEnabler},
 
     props: ['schema', 'modelWrapper', 'modelRoot', 'modelKey', 'parentKey', 'required', 'options'],
     data() {
