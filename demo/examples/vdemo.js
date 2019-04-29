@@ -12,6 +12,7 @@ module.exports = {
       'fecha_vencimiento_extintor': {
         'id': 'la-fecha-devemcimiento',
         'noedit': true,
+        'max': 'today',
         'type': 'string',
         'format': 'date',
         'title': 'Fecha de vencimiento del extintor',

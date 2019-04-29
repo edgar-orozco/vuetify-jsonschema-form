@@ -34,7 +34,11 @@
                     <div class="vjsf-tooltip" v-html="htmlDescription"/>
                 </v-tooltip>
             </v-text-field>
-            <v-date-picker v-model="modelWrapper[modelKey]" no-title scrollable :locale="options.locale">
+            <v-date-picker v-model="modelWrapper[modelKey]" no-title scrollable
+                           :locale="options.locale"
+                           :min="( fullSchema.min && fullSchema.min == 'today' ) ? (new Date()).toISOString().split('T')[0] : (fullSchema.min || null)"
+                           :max="( fullSchema.max && fullSchema.max == 'today' ) ? (new Date()).toISOString().split('T')[0] : (fullSchema.max || null)"
+            >
                 <v-spacer/>
                 <v-btn flat color="primary" @click="menu = false">{{options.i18n[options.locale].cancel || 'Cancel'}}
                 </v-btn>
